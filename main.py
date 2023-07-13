@@ -136,6 +136,7 @@ def test():
 
 
     # ⚡⚡ 2. Set 'Model', 'Loss', 'Optimizer', 'Scheduler'
+    # Note that 'Optimizer' and 'Scheduler' are not needed for testing. They can be set to None.
     preprocess = importlib.import_module('models.' + config['feature_extractor']).__getattribute__("feature_extractor")
     preprocess =  preprocess(**config['feature_extractor_config'])
 
