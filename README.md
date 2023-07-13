@@ -1,5 +1,6 @@
 # Advancing Sound Event Detection: Knowledge Distillation Applied to CRNN Models
 - This repository is an official implemtation of Advancing Sound Event Detection: Knowledge Distillation Applied to CRNN Models
+- 참고: [구글드라이브링크](https://docs.google.com/presentation/d/1ygPbDiWyCCvPTNYUp7qWYroRdRDjd7aC/edit?usp=sharing&ouid=112517158866107854817&rtpof=true&sd=true)
 
 ## Introduction
 ### Dataset
