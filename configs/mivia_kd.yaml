@@ -1,0 +1,105 @@
+# 1. DataLoader
+TRAIN_DATASET: dataloader_mivia
+TRAIN_DATASET_CONFIG:
+  mivia_path: './data/mivia_raw'
+  max_frames: 60
+  fs: 16000
+  partition: ['A', 'B']
+  hop_length: 128
+  net_pooling: 1
+
+batch_size: 4
+num_workers: 8
+
+VAL_DATASET: dataloader_mivia
+VAL_DATASET_CONFIG:
+  mivia_path: './data/mivia_raw'
+  max_frames: 60
+  fs: 16000
+  partition: ['C']
+  hop_length: 128
+  net_pooling: 1
+
+TEST_DATASET: dataloader_mivia
+TEST_DATASET_CONFIG:
+  mivia_path: './data/mivia_raw'
+  max_frames: 60
+  fs: 16000
+  partition: ['D']
+  hop_length: 128
+  net_pooling: 1
+
+
+# feature extractor
+feature_extractor: log_mel
+feature_extractor_config:
+  fs: 16000
+  n_fft: 512
+  n_mels: 128
+  hop_length: 128
+  win_length: 512
+  f_min: 0
+  f_max: 8000
+
+
+
+# 2. Model
+model_student: crnn_baseline
+model_student_config:
+  n_class: 2
+  n_input_ch: 1
+
+model_teacher: fdycrnn
+model_teacher_config:
+  n_class: 2
+  n_RNN_cell: 256
+  n_RNN_layer: 2
+  rec_dropout: 0
+  attention: class                      # time / class
+
+  n_input_ch: 1
+  activation: cg
+  conv_dropout: 0.5
+  kernel: [ 3, 3, 3, 3, 3, 3, 3 ]
+  pad: [ 1, 1, 1, 1, 1, 1, 1 ]
+  stride: [ 1, 1, 1, 1, 1, 1, 1 ]
+  n_filt: [ 32, 64, 128, 256, 256, 256, 256 ]
+  pooling: [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 1, 2 ] ]
+
+  n_basis_kernels: 1
+  DY_layers: [ 0, 1, 1, 1, 1, 1, 1 ]
+  temperature: 31
+  pool_dim: time                       # leave time: "freq", pool time "time", pool both: "both"
+
+
+# 2. Optimizer
+optimizer: adam
+optimizer_config:
+  lr: 0.001
+  weight_decay: 0
+
+# 2. LossFunction
+loss_bce: bce
+loss_mse: mse
+
+# 2. Scheduler
+scheduler: steplr
+scheduler_config:
+  step_size: 30
+  gamma: 0.95
+
+
+# trainer
+default_root_dir: ./results/mivia_kd
+profiler: advanced
+max_epoch: 200
+devices: 1
+accelerator: gpu
+num_sanity_val_steps: -1
+
+
+# save, load
+resume_checkpoint: 
+
+# random seed
+random_seed: 2301235
